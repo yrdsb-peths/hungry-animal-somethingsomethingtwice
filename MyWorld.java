@@ -19,6 +19,13 @@ public class MyWorld extends World
         super(600, 400, 1);
         
         Elephant elephant = new Elephant();
-        addObject(elephant, 300, 200);
+        addObject(elephant, 300, 300);
+        createApple();
+    }
+    
+    public void createApple()
+    {
+        Apple apple = new Apple();
+        addObject(apple, Greenfoot.getRandomNumber(600), 0);
     }
 }
