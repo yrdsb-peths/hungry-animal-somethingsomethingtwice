@@ -13,5 +13,8 @@ public class Apple extends SmoothMover
     {
         gravity += 0.03;
         setLocation(getExactX(), getExactY() + gravity);
+        MyWorld world = (MyWorld) getWorld();
+        if (getExactY() >= world.getHeight() - 1)
+            world.gameOver();
     }
 }

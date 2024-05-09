@@ -62,6 +62,17 @@ public class Label extends Actor
     }
     
     /**
+     * Sets the font size (why isn't this in the base class?)
+     * 
+     * @param size the new size
+     */
+    public void setSize(int size)
+    {
+        this.fontSize = size;
+        updateImage();
+    }
+    
+    /**
      * Sets the line color of the text
      * 
      * @param lineColor the line color of the text
