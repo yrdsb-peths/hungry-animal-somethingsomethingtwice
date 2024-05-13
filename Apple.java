@@ -9,12 +9,17 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Apple extends SmoothMover
 {
     double gravity = 0;
+    double gravityScale = 0.03;
     public void act()
     {
-        gravity += 0.03;
+        gravity += gravityScale;
         setLocation(getExactX(), getExactY() + gravity);
         MyWorld world = (MyWorld) getWorld();
         if (getExactY() >= world.getHeight() - 1)
             world.gameOver();
+    }
+    
+    public void setGravityScale(double newScale) {
+        gravityScale = newScale;
     }
 }

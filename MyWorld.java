@@ -9,6 +9,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class MyWorld extends World
 {
     int score = 0;
+    int level = 1;
     Label scoreLabel;
     Elephant elephant;
     Apple apple;
@@ -38,7 +39,8 @@ public class MyWorld extends World
     public void createApple()
     {
         apple = new Apple();
-        addObject(apple, Greenfoot.getRandomNumber(600), 0);
+        apple.setGravityScale(0.01 * Math.min(level, 7));
+        addObject(apple, 32 + Greenfoot.getRandomNumber(600 - 32 - 32), 0);
     }
     
     public void gameOver()

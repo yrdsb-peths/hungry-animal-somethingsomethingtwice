@@ -13,9 +13,14 @@ public class Elephant extends SmoothMover
     double accel = 0.5;
     double velocity = 0;
     int imageIndex = 0;
+    SimpleTimer animationTimer = new SimpleTimer();
+    boolean previousState = false;
+    boolean walking = false;
     boolean facingLeft = false;
     GreenfootImage[] idleRight = new GreenfootImage[8];
     GreenfootImage[] idleLeft = new GreenfootImage[8];
+    GreenfootImage[] walkRight = new GreenfootImage[8];
+    GreenfootImage[] walkLeft = new GreenfootImage[8];
     GreenfootSound sfxCollect = new GreenfootSound("elephantcub.mp3");
     
     public Elephant() {
@@ -25,13 +30,33 @@ public class Elephant extends SmoothMover
             idleLeft[i] = new GreenfootImage(idleRight[i]);
             idleLeft[i].mirrorHorizontally();
         }
+        
+        for (int i = 0; i < walkRight.length; i++) {
+            walkRight[i] = new GreenfootImage("elephant_walk/walk" + i + ".png");
+            walkRight[i].scale(100, 90);
+            walkLeft[i] = new GreenfootImage(walkRight[i]);
+            walkLeft[i].mirrorHorizontally();
+        }
+        animationTimer.mark();
     }
     
     public void animate() {
-        if (!facingLeft)
-            setImage(idleRight[imageIndex]);
-        else
-            setImage(idleLeft[imageIndex]);
+        if (previousState == walking
+        && ((animationTimer.millisElapsed() < 1000 / 60 * 3)
+        || (walking && animationTimer.millisElapsed() < 150 - 30 * Math.abs(velocity))))
+            return;
+        animationTimer.mark();
+        if (!facingLeft) {
+            if (!walking)
+                setImage(idleRight[imageIndex]);
+            else
+                setImage(walkRight[imageIndex]);
+        } else {
+           if (!walking)
+                setImage(idleLeft[imageIndex]);
+            else
+                setImage(walkLeft[imageIndex]);
+        }
         imageIndex = (imageIndex + 1) % idleRight.length;
     }
     
@@ -52,7 +77,12 @@ public class Elephant extends SmoothMover
                 velocity = 0;
         }
         attemptExactMove();
+        if (walking && velocity == 0)
+            walking = false;
+        else if (!walking && velocity != 0)
+            walking = true;
         animate();
+        previousState = walking;
         
         if (isTouching(Apple.class)) {
             sfxCollect.stop();
@@ -60,6 +90,8 @@ public class Elephant extends SmoothMover
             removeTouching(Apple.class);
             MyWorld world = (MyWorld) getWorld();
             world.score++;
+            if (world.score % 10 == 0)
+                world.level++;
             world.updateScore();
             world.createApple();
         }
