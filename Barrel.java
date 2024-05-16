@@ -1,14 +1,14 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Main objective of the game. Ends the game if it hits the floor.
+ * New obstacle which ends the game if touched. Really unfair due to the shadow.
  * 
  * @author Ethan 
  * @version May 2024
  */
-public class Apple extends FallingObject
+public class Barrel extends FallingObject
 {
     public void hitGround() {
-        world.gameOver();
+        world.createBarrel();
     }
 }

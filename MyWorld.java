@@ -1,7 +1,7 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Game World.
+ * Game world.
  * 
  * @author Ethan 
  * @version April 2024
@@ -13,6 +13,8 @@ public class MyWorld extends World
     Label scoreLabel;
     Elephant elephant;
     Apple apple;
+    Barrel barrel;
+    GreenfootSound musGame = new GreenfootSound("Chicken Soup.mid");
     /**
      * Constructor for objects of class MyWorld.
      * 
@@ -27,6 +29,7 @@ public class MyWorld extends World
         addObject(scoreLabel, 15, 15);
         addObject(elephant, 300, 300);
         createApple();
+        musGame.playLoop();
     }
     
     public void updateScore()
@@ -43,10 +46,20 @@ public class MyWorld extends World
         addObject(apple, 32 + Greenfoot.getRandomNumber(600 - 32 - 32), 0);
     }
     
+    public void createBarrel()
+    {
+        if (barrel != null)
+            removeObject(barrel);
+        barrel = new Barrel();
+        barrel.setGravityScale(0.01 * Math.min(level, 10) + 0.02);
+        addObject(barrel, 32 + Greenfoot.getRandomNumber(600 - 32 - 32), 0);
+    }
+    
     public void gameOver()
     {
         removeObject(elephant);
         removeObject(apple);
+        removeObject(barrel);
         scoreLabel.setSize(40);
         scoreLabel.setLocation(getWidth() / 2, getHeight() / 2 + 20);
         

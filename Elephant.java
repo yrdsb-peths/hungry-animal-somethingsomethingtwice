@@ -42,7 +42,7 @@ public class Elephant extends SmoothMover
     
     public void animate() {
         if (previousState == walking
-        && ((animationTimer.millisElapsed() < 1000 / 60 * 3)
+        && ((animationTimer.millisElapsed() < 1000 / 60 * 5)
         || (walking && animationTimer.millisElapsed() < 150 - 30 * Math.abs(velocity))))
             return;
         animationTimer.mark();
@@ -84,12 +84,16 @@ public class Elephant extends SmoothMover
         animate();
         previousState = walking;
         
-        if (isTouching(Apple.class)) {
+        MyWorld world = (MyWorld) getWorld();
+        if (isTouching(Barrel.class)) {
+            world.gameOver();
+        } else if (isTouching(Apple.class)) {
             sfxCollect.stop();
             sfxCollect.play();
             removeTouching(Apple.class);
-            MyWorld world = (MyWorld) getWorld();
             world.score++;
+            if (world.score == 10)
+                world.createBarrel();
             if (world.score % 10 == 0)
                 world.level++;
             world.updateScore();
